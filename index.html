@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gradient Background Website</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="gradient-background">
+        <div class="container">
+          <div class="transparent-box">
+            <h1>Welcome to JS Exercises</h1>
+            <p>6409610646</p>
+            <!-- เพิ่มปุ่มสำหรับสุ่มเลข -->
+            <button id="random-button" class="random-button">Random Number</button>
+            <button id="reset" class="random-button">Reset</button>
+          </div>
+          <div class="transparent-box">
+            <!-- ส่วนที่ใช้แสดงผลลัพธ์ -->
+            <div id="resultR"></div>
+            
+            <!-- ส่วนที่ใช้ในการกรอกข้อมูล -->
+            <div class="remaining-entries"></div>
+            <div class="input-container">
+              <label for="name">Name:</label>
+              <input type="text" id="name" name="name">
+              
+              <label for="age">Age:</label>
+              <input type="text" id="age" name="age">
+            </div>
+            <button id="next">Next</button>
+            
+          </div>
+          <div id="func-buttons" style="display: none;">
+            <button id="total" class="func">Total</button>
+            <button id="average" class="func">Average</button>
+            <button id="youngest" class="func">Youngest</button>
+            <button id="oldest" class="func">Oldest</button>
+          </div>
+        </div>
+    </div>
+</body>
+<script src="script.js" defer></script>
+</html>
+
+
+
+
+
