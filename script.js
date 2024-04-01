@@ -5,12 +5,9 @@ const nameInput = document.getElementById('name');
 const ageInput = document.getElementById('age');
 const nextButton = document.getElementById('next');
 const funcButtonsContainer = document.getElementById('func-buttons');
-
 // ตัวแปรสำหรับเก็บข้อมูล
-let userData = {
-  name: '',
-  age: ''
-};
+let userData = [];
+
 reset.style.display = 'none'
 // ตัวแปรสำหรับจำนวนครั้งที่ต้องกรอก
 let remainingEntries = 0;
@@ -23,6 +20,7 @@ randomButton.addEventListener('click', () => {
       randomButton.style.display = 'none'
       reset.style.display = 'block'
     }
+    
 
     // แสดงเลขที่สุ่มได้
     const resultDiv = document.getElementById('resultR');
@@ -55,8 +53,7 @@ nextButton.addEventListener('click', () => {
     }
 
     // เก็บชื่อและอายุ
-    userData.name = nameInput.value;
-    userData.age = ageInput.value;
+    userData.push({ name: nameInput.value, age: parseInt(ageInput.value) });
 
     // ลบค่าที่กรอกไป
     nameInput.value = '';
@@ -72,7 +69,7 @@ nextButton.addEventListener('click', () => {
     if (remainingEntries === 0) {
         funcButtonsContainer.style.display = 'block';
         nextButton.style.display = 'none'
-
+       
     }
 });
 
@@ -81,30 +78,40 @@ funcButtonsContainer.addEventListener('click', (event) => {
     const target = event.target;
     if (target.tagName === 'BUTTON') {
         switch (target.id) {
-          case 'total':
-            //เพิ่มโค้ดสำหรับคำนวณอายุรวมของเพื่อนทั้งหมด และแสดงผล
-            break;
+            case 'total':
+                const total = totalAge();
+                ageR = total;
+
+                break;
             case 'average':
-                // เพิ่มโค้ดสำหรับคำนวณอายุเฉลี่ยของกลุ่มเพื่อน และแสดงผล
+                const ave = averageAge();
+                ageR = ave;
                 break;
             case 'youngest':
-                // เพิ่มโค้ดสำหรับคำนวณอายุของเพื่อนที่อายุน้อยที่สุด และแสดงผล
+                const ageY = youngestAge();
+                ageR = ageY;
+                youngestName();
                 break;
             case 'oldest':
-                // เพิ่มโค้ดสำหรับคำนวณอายุของเพื่อนที่อายุมากที่สุด และแสดงผล
+                const ageO = oldestAge()
+                ageR = ageO;
+                oldestName();
                 break;
             default:
                 break;
         }
     }
+            const AgeDisplay = document.getElementById('AgeDisplay');
+            AgeDisplay.textContent = 'Total friend age: ' + ageR;
 });
 // เลือกปุ่มสำหรับการรีเซ็ต
 reset.addEventListener('click', () => {
   // ล้างข้อมูลทั้งหมด
-  userData = {
-      name: '',
-      age: ''
-  };
+  userData = [];
+  NameR = '';
+  ageR = '';
+  NameDisplay.textContent = '';
+  AgeDisplay.textContent = '';
 
   // ล้างค่าที่กรอก
   nameInput.value = '';
@@ -123,20 +130,104 @@ reset.addEventListener('click', () => {
   nextButton.style.display = 'block';
   randomButton.style.display = 'block';
   reset.style.display = 'none';
+  totalAgeDisplay.style = 'none'
 });
 
+// ฟังก์ชันสำหรับคำนวณอายุรวมของเพื่อนทั้งหมด
+function totalAge() {
+    let totalAge = 0;
+    for (let i = 0; i < userData.length; i++) {
+        totalAge += userData[i].age;
+    }
+    return totalAge;
+}
 
 
 
+// ฟังก์ชันสำหรับคำนวณอายุเฉลี่ยของกลุ่มเพื่อน
+function averageAge() {
+    let totalAge = 0;
+    for (let i = 0; i < userData.length; i++) {
+        totalAge += userData[i].age;
+    }
+    const average = totalAge / userData.length;
+    return average;
+}
 
 
+function youngestName() {
+    NameDisplay.textContent = '';
+    let minAge = Infinity; // กำหนดค่าอายุน้อยสุดเริ่มต้นเป็น Infinity เพื่อให้เป็นตัวเลขที่มากที่สุด
+    let youngestFriends = []; // ตัวแปรสำหรับเก็บชื่อเพื่อนที่มีอายุน้อยที่สุด
 
+    // วนลูปผ่าน userData เพื่อหาเพื่อนที่มีอายุน้อยที่สุด
+    for (let i = 0; i < userData.length; i++) {
+        if (userData[i].age < minAge) {
+            minAge = userData[i].age;
+            youngestFriends = [userData[i].name]; // กำหนดชื่อเพื่อนที่มีอายุน้อยที่สุดใหม่
+        } else if (userData[i].age === minAge) {
+            youngestFriends.push(userData[i].name); // เพิ่มชื่อเพื่อนที่มีอายุเท่ากับค่าอายุน้อยสุด
+        }
+    }
+    youngestFriends.forEach(friend => {
+        const NameDisplay = document.getElementById('NameDisplay');
+        NameDisplay.textContent += friend + ', '; // เพิ่มชื่อของเพื่อนในแต่ละรอบของการวนลูป
+    });    
 
+    return youngestFriends; // คืนค่าชื่อของเพื่อนที่มีอายุน้อยที่สุด
+}
 
+function youngestAge() {
+    
+    let minAge = Infinity; // กำหนดค่าอายุน้อยสุดเริ่มต้นเป็น Infinity เพื่อให้เป็นตัวเลขที่มากที่สุด
+    let youngestAge = 0; // ตัวแปรสำหรับเก็บอายุของเพื่อนที่มีอายุน้อยที่สุด
 
+    // วนลูปผ่าน userData เพื่อหาเพื่อนที่มีอายุน้อยที่สุด
+    for (let i = 0; i < userData.length; i++) {
+        if (userData[i].age < minAge) {
+            minAge = userData[i].age;
+            youngestAge = minAge; // กำหนดอายุของเพื่อนที่มีอายุน้อยที่สุดใหม่
+        }
+    }
 
-     
+    return youngestAge; // คืนค่าอายุของเพื่อนที่มีอายุน้อยที่สุด
+}
 
+function oldestName() {
+    NameDisplay.textContent = '';
+    let maxAge = -Infinity; // กำหนดค่าอายุมากสุดเริ่มต้นเป็น -Infinity เพื่อให้เป็นตัวเลขที่น้อยที่สุด
+    let oldestFriends = []; // ตัวแปรสำหรับเก็บชื่อเพื่อนที่มีอายุมากที่สุด
 
+    // วนลูปผ่าน userData เพื่อหาเพื่อนที่มีอายุมากที่สุด
+    for (let i = 0; i < userData.length; i++) {
+        if (userData[i].age > maxAge) {
+            maxAge = userData[i].age;
+            oldestFriends = [userData[i].name]; // กำหนดชื่อเพื่อนที่มีอายุมากที่สุดใหม่
+        } else if (userData[i].age === maxAge) {
+            oldestFriends.push(userData[i].name); // เพิ่มชื่อเพื่อนที่มีอายุเท่ากับค่าอายุมากสุด
+        }
+    }
+    oldestFriends.forEach(friend => {
+        const NameDisplay = document.getElementById('NameDisplay');
+        NameDisplay.textContent += friend + ', '; // เพิ่มชื่อของเพื่อนในแต่ละรอบของการวนลูป
+    });
+
+    return oldestFriends; // คืนค่าชื่อของเพื่อนที่มีอายุมากที่สุด
+}
+
+function oldestAge() {
+    let maxAge = -Infinity; // กำหนดค่าอายุมากสุดเริ่มต้นเป็น -Infinity เพื่อให้เป็นตัวเลขที่น้อยที่สุด
+    let oldestAge = 0; // ตัวแปรสำหรับเก็บอายุของเพื่อนที่มีอายุมากที่สุด
+
+    // วนลูปผ่าน userData เพื่อหาเพื่อนที่มีอายุมากที่สุด
+    for (let i = 0; i < userData.length; i++) {
+        if (userData[i].age > maxAge) {
+            maxAge = userData[i].age;
+            oldestAge = maxAge; // กำหนดอายุของเพื่อนที่มีอายุมากที่สุดใหม่
+        }
+    }
+
+    return oldestAge; // คืนค่าอายุของเพื่อนที่มีอายุมากที่สุด
+}
 
 

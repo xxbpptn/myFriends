@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   padding: 0;
@@ -35,7 +36,7 @@ body {
 
 .transparent-box {
   background-color: rgba(255, 255, 255, 0.4);
-  padding: 20px;
+  padding: 50px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 20px;
@@ -85,7 +86,6 @@ body {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-/* CSS */
 #next {
   display: block;
   margin: auto;
@@ -162,11 +162,9 @@ body {
 .func:focus-visible {
   box-shadow: none;
 }
-.cac {
+.age {
   margin-top: 10px;
 }
-
-
 
 
 
